@@ -8,6 +8,7 @@ import axios from 'axios';
 const OrderCard = (props) => {
     const [latitude, setlatitude]= useState(null)
     const [longitude, setlongitude]= useState(null)
+    
     async function getLocation(){
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {

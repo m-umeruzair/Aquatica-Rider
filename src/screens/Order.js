@@ -1,15 +1,44 @@
-import { StyleSheet, Text, View,TouchableOpacity,Alert } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View,TouchableOpacity,Alert,Linking } from 'react-native'
+import React, { useState } from 'react'
 import HomeHeadNav from '../components/HomeHeadNav'
 import { colors } from '../globals/style'
 import axios from 'axios'
 import ip from '../globals/ip'
+import * as Location from 'expo-location';
 
 const Order = ({route,navigation}) => {
+  const [latitude, setlatitude]= useState(null)
+  const [longitude, setlongitude]= useState(null)
     const params=route.params
   const user=params.user
-   console.log(params.id)
+   console.log(params.user._id)
    
+   async function getLocation(){
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+      return;
+    }
+    
+    try {
+      // Get the user's current location
+      const location = await Location.getCurrentPositionAsync({});
+   //   setCurrentLocation(location.coords)
+    //  console.log(currentLocation)
+     
+      const { latitude, longitude } = location.coords;
+    setlatitude(latitude)
+    setlongitude(longitude)
+    
+    }
+      catch(error){
+        console.log(error)
+      }}
+
+      getLocation();
+      
+
+
   async function completed(){
   await  axios({
         method:"POST",
@@ -18,12 +47,33 @@ const Order = ({route,navigation}) => {
           id:params.id,
           x:1
         }
-       }).then(res=>{
-        if(res.status==200){
-            showAlert1()
-            navigation.navigate('home',{user:user})
-        }
+       
        }).catch(error=>{console.log(error)})
+
+     await  axios({
+        method:"PUT",
+        url:`http://${ip.ip.main}:5005/updateCompany`,
+        data:{
+          companyTotalSales:params.companySales,
+          companyName:params.companyName,
+          x:1
+        }
+       })
+   
+       axios({method:"POST",
+      url:`http://${ip.ip.main}:5005/updateRider`,
+      data:{
+        Id:params.user._id,
+        riderEarning:50,
+        riderTotalOrders:1
+      }
+    }).then(res=>{
+      if(res.status==200){
+        showAlert1()
+            navigation.navigate('home',{user:user})
+      }
+    }).catch(error=>{console.log(error)})
+       
   }
 
   const showAlert1 = () =>{

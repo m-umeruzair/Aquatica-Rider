@@ -9,8 +9,8 @@ const updateRider= require('./routes/updateRider')
 const readOrder= require('./routes/readOrder')
 const finduser= require('./routes/findUser')
 const completeOrder= require('./routes/completeOrder')
-
-
+const findrider= require('./routes/findRider')
+const updateCompany= require('./routes/companyUpdate')
 
 
 dotenv.config();
@@ -33,8 +33,8 @@ app.use(updateRider)
 app.use(readOrder)
 app.use(finduser)
 app.use(completeOrder)
-
-
+app.use(findrider)
+app.use(updateCompany)
 
 app.listen(process.env.PORT, (error) => {
   

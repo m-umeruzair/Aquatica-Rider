@@ -36,6 +36,7 @@ export const LoginScreen = ({navigation}) => {
 
   async function SignIn(e){
     e.preventDefault()
+    
     await axios.get(`http://${ip.ip.main}:5005/log-in`,{
     params:{
         email:email,

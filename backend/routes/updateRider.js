@@ -7,8 +7,9 @@ const nodemailer = require("nodemailer");
 
 router.post('/updateRider' ,async(req,res)=>{
     var rider
-    console.log('hit')
-      if(req.body.riderName==null && req.body.riderEmail==null && req.body.riderPassword==null && req.body.riderNumber==null && req.body.riderNIC==null && req.body.riderVehicleName==null && req.body.riderVehicleNo==null){
+    
+      if(req.body.riderName==null && req.body.riderEmail==null && req.body.riderPassword==null && req.body.riderNumber==null && 
+        req.body.riderNIC==null && req.body.riderVehicleName==null && req.body.riderVehicleNo==null && req.body.riderEarning==null && req.body.riderTotalOrders==null){
         res.status(400).send()
       }
       else{
@@ -63,7 +64,24 @@ router.post('/updateRider' ,async(req,res)=>{
         rider = await Rider.find({_id:Id})
 
       }
-      console.log(rider)
+      if(req.body.riderEarning!=null){
+        var Id= req.body.Id
+        rider = await Rider.find({_id:Id})
+        console.log(Id)
+        rider[0].riderEarning=rider[0].riderEarning+req.body.riderEarning
+        
+        await Rider.findOneAndUpdate({_id:Id},{$set:{riderEarning:rider[0].riderEarning}})
+        rider = await Rider.find({_id:Id})
+      }
+      if(req.body.riderTotalOrders!=null){
+        var Id= req.body.Id
+        rider = await Rider.find({_id:Id})
+        rider[0].riderTotalOrders=rider[0].riderTotalOrders+req.body.riderTotalOrders
+        await Rider.findOneAndUpdate({_id:Id},{$set:{riderTotalOrders:rider[0].riderTotalOrders}})
+        rider = await Rider.find({_id:Id})
+      }
+
+     // console.log(rider)
        res.status(200).json({rider:rider})
     
     }

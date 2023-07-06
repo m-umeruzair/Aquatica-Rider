@@ -7,6 +7,8 @@ import { colors } from '../globals/style'
 import axios from 'axios';
 import OrderCard from '../components/orderCard';
 import ip from '../globals/ip';
+import * as Location from 'expo-location';
+
 
 const HomeScreen = ({ navigation, route }) => {
   const params = route.params
@@ -14,7 +16,9 @@ const HomeScreen = ({ navigation, route }) => {
 
   const [user1, setuser1] = useState(null)
   const [data, setData] = useState(null)
-
+  const [earning, setEarning] = useState(null)
+  const [totalorders, setTotalorders]= useState(null)
+  
   useEffect(() => {
     const fetchData = async () => {
      
@@ -22,10 +26,18 @@ const HomeScreen = ({ navigation, route }) => {
           params: {
             _cacheBuster: Date.now() // Add a unique cache-busting query parameter
           }
-        }).then(res=>setData(res.data)).catch(err=>console.log(err)+setData(null));
+        }).then(res=>setData(res.data)+console.log(res.data[0].orderAmount)).catch(err=>console.log(err)+setData(null));
+
+        await axios.get(`http://${ip.ip.main}:5005/findRider`,{
+          params:{
+             id:user._id
+          }
+        }).then(res=>{
+          
+          setEarning(res.data[0].riderEarning)
+          setTotalorders(res.data[0].riderTotalOrders)
+        })
         
-        
-     
     };
   
     const unsubscribe = navigation.addListener('focus', () => {
@@ -57,8 +69,8 @@ const HomeScreen = ({ navigation, route }) => {
       <StatusBar />
       <HomeHeadNav user={user} navigation={navigation} />
       <View style={styles.box}>
-        <Text style={styles.boxText}>Total Orders Completed: {user.riderTotalOrders}</Text>
-        <Text style={styles.boxText}>Total Earning: {user.riderEarning}</Text>
+        <Text style={styles.boxText}>Total Orders Completed: {totalorders}</Text>
+        <Text style={styles.boxText}>Total Earning: {earning}</Text>
       </View>
       <View style={styles.box2}>
         <Text style={styles.boxText}>Availability:{Availability == false ? 'No' : 'Yes'}</Text>
@@ -82,6 +94,8 @@ const HomeScreen = ({ navigation, route }) => {
                     longitude={order.longitude}
                     navigation={navigation}
                     user={user}
+                    companyName={order.orderItems.map((item)=>item.productCompany).join(', ')}
+                    companySales={order.orderItems.map((item)=>item.productPrice).join(', ')}
                   />
                 ))}
               </View>

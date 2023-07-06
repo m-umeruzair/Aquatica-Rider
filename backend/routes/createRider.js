@@ -52,7 +52,7 @@ router.post('/createRider', async(req,res)=>{
         riderEmail:req.body.riderEmail,
         riderPassword:hashedPassword,
         riderNumber:req.body.riderNumber,
-        riderNIC:req.body.riderId,
+        riderNIC:req.body.riderNIC,
         riderName:req.body.riderName,
         riderVehicleName:req.body.riderVehicleName,
         riderVehicleNo:req.body.riderVehicleNo,
