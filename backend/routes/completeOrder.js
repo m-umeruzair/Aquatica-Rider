@@ -5,7 +5,7 @@ const router = express.Router();
 router.post('/completeOrder', async(req,res)=>{
 
     if(req.body.x==1){
-    await Order.findOneAndUpdate({_id:req.body.id},{$set:{orderStatus:"Delivered"}})
+    await Order.findOneAndUpdate({_id:req.body.id},{$set:{orderStatus:"Delivered",orderDeliveredBy:req.body.riderID}})
      console.log('aaaa')
     res.status(200).send()
     }

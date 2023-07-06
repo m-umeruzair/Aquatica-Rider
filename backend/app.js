@@ -11,7 +11,7 @@ const finduser= require('./routes/findUser')
 const completeOrder= require('./routes/completeOrder')
 const findrider= require('./routes/findRider')
 const updateCompany= require('./routes/companyUpdate')
-
+const updateProduct= require('./routes/updateProduct')
 
 dotenv.config();
 const app = express();
@@ -35,6 +35,7 @@ app.use(finduser)
 app.use(completeOrder)
 app.use(findrider)
 app.use(updateCompany)
+app.use(updateProduct)
 
 app.listen(process.env.PORT, (error) => {
   
