@@ -71,6 +71,21 @@ const  SignUpScreen = ({navigation}) => {
       )
     }
 
+    const showAlert7 = () =>{
+      Alert.alert(
+         'Password length should be greater than 5'
+      )
+    }
+    const showAlert8 = () =>{
+      Alert.alert(
+         'Invalid phone Number'
+      )
+    }
+    const showAlert9 = () =>{
+      Alert.alert(
+         'Invalid Car Number Plate'
+      )
+    }
  
     
  
@@ -104,8 +119,18 @@ const  SignUpScreen = ({navigation}) => {
    function signUp(e){
        e.preventDefault()
        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+       let reg2= /^[A-Za-z]{3}-\d{3}$/
        if(reg.test(email)==false){
         showAlert4()
+       }
+       else if(password.length <5){
+          showAlert7()
+       }
+       else if(phoneNumber.length < 10){
+        showAlert8()
+       }
+       else if(reg2.test(vehicleNumber)==false){
+         showAlert9()
        }
        else if(password==null || email==null || password2==null || fullName==null || vehicleName==null||vehicleNumber==null||id==null || phoneNumber==null){
        showAlert5()
@@ -151,7 +176,7 @@ const  SignUpScreen = ({navigation}) => {
 
      <View style={styles.inputout}>
             <AntDesign name="user" size={24} color={nameFocus===true ? colors.white : colors.dark } />
-            <TextInput style={styles.input}  placeholder='Full Name' placeholderTextColor={nameFocus===true ? colors.white : colors.dark }
+            <TextInput  style={styles.input}  placeholder='Full Name' placeholderTextColor={nameFocus===true ? colors.white : colors.dark }
             onFocus={()=>{ setNameFocus(true)+setidFocus(false)+setEmailFocus(false)+setPasswordFocus(false)+setConfirmPasswordFocus(false)+setvehicleNameFocus(false)+setVehicleNumberFocus(false)+setMobileFocus(false)}}
             onChangeText={e=>setFullName(e)}
             value={fullName}

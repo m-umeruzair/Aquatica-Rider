@@ -27,6 +27,7 @@ const HomeScreen = ({ navigation, route }) => {
             _cacheBuster: Date.now() // Add a unique cache-busting query parameter
           }
         }).then(res=>setData(res.data)+console.log(res.data[0].orderAmount)).catch(err=>console.log(err)+setData(null));
+        
 
         await axios.get(`http://${ip.ip.main}:5005/findRider`,{
           params:{
@@ -96,6 +97,7 @@ const HomeScreen = ({ navigation, route }) => {
                     user={user}
                     companyName={order.orderItems.map((item)=>item.productCompany).join(', ')}
                     companySales={order.orderItems.map((item)=>item.productPrice).join(', ')}
+                    productID={order.orderItems.map((item)=>item.productID).join(', ')}
                   />
                 ))}
               </View>

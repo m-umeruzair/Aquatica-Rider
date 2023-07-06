@@ -11,7 +11,7 @@ const Order = ({route,navigation}) => {
   const [longitude, setlongitude]= useState(null)
     const params=route.params
   const user=params.user
-   console.log(params.user._id)
+   console.log('??:'+params.productID)
    
    async function getLocation(){
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -45,7 +45,8 @@ const Order = ({route,navigation}) => {
         url:`http://${ip.ip.main}:5005/completeOrder`,
         data:{
           id:params.id,
-          x:1
+          x:1,
+          riderID:params.user._id
         }
        
        }).catch(error=>{console.log(error)})
@@ -59,6 +60,11 @@ const Order = ({route,navigation}) => {
           x:1
         }
        })
+
+      await axios({method:"PUT",url:`http://${ip.ip.main}:5005/updateProduct`,
+                    data:{
+                        id:params.productID
+                    }})
    
        axios({method:"POST",
       url:`http://${ip.ip.main}:5005/updateRider`,
