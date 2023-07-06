@@ -86,6 +86,12 @@ const  SignUpScreen = ({navigation}) => {
          'Invalid Car Number Plate'
       )
     }
+    
+    const showAlert10 = () =>{
+      Alert.alert(
+         'Name must be greater than 2 characters'
+      )
+    }
  
     
  
@@ -125,6 +131,9 @@ const  SignUpScreen = ({navigation}) => {
        }
        else if(password.length <5){
           showAlert7()
+       }
+       else if(fullName.length<2){
+        showAlert10()
        }
        else if(phoneNumber.length < 10){
         showAlert8()
